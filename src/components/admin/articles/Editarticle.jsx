@@ -35,7 +35,7 @@ export default function Editarticle({initialArticle,modifarticle}) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [files, setFiles] = useState([]);
-  const [article, setArticle] = useState(initialArticle || {});
+  const [article, setArticle] = useState(initialArticle);
   const[scategories,setScategories]=useState([])
 
 const getscategories=async()=>{
@@ -49,8 +49,20 @@ const getscategories=async()=>{
 }
 useEffect(()=>{
   getscategories()
-
-},[])
+  setFiles( [
+    {
+    source: article.imageart,
+    options: { type: 'local' }
+    }
+    ])
+// Si initialArticle.scategorieID est un objet, on récupère son _id
+if (initialArticle && initialArticle.scategorieID) {
+  setArticle({
+    ...initialArticle,
+    scategorieID: initialArticle.scategorieID._id || initialArticle.scategorieID,
+  });
+}
+},[initialArticle])
 
 const handleSave=async(e)=>{
   try {
@@ -74,6 +86,14 @@ const vider=()=>{
 
 const serverOptions = () => { 
   return {
+    load: (source, load, error, progress, abort, headers) => {
+      var myRequest = new Request(source);
+      fetch(myRequest).then(function(response) {
+      response.blob().then(function(myBlob) {
+      load(myBlob);
+      });
+      });
+      },
     process: (fieldName, file, metadata, load, error, progress, abort) => {
   
       const data = new FormData();
@@ -113,7 +133,7 @@ const serverOptions = () => {
         <Box sx={style}>
 
           <div >
-        <center><h1>Insérer un article</h1></center>
+        <center><h1>Modifier un article</h1></center>
        <Form>
         <Row>
       <Form.Group as={Col} md="6">
