@@ -12,7 +12,7 @@ const Listarticles = () => {
   const[articles, setArticles] = useState([])
   const[loading, setLoading] = useState(true)
   const[error, setError] = useState(false)
-const[x,setX]=useState(0)
+
   const getarticles = async () => {
     try {
       const res = await fetcharticles()

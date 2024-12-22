@@ -18,6 +18,6 @@ export const editarticle=(article) =>{
     return Api.put(ARTICLE_API + '/' + article._id, article);
     }
     export const fetcharticlesPagination=async(page,limit)=> {
-        
-        return await axios.get(ARTICLE_API + `/pagination?page=${page}&limit=${limit}`)
+  
+        return await Api.get(ARTICLE_API + `/pagination?page=${page}&limit=${limit}`)
         }
